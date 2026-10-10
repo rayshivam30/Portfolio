@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Shivam Ray - Undergraduate Software Engineer specializing in Java 21, Spring Boot, distributed backend architectures, and AI integrations."
+    />
+    <meta name="author" content="Shivam Ray" />
+    <title>shivam@portfolio: ~ (bash)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d1117;
+        --header-bg: #161b22;
+        --border: #30363d;
+        --text: #c9d1d9;
+        --dim: #8b949e;
+        --user: #3fb950;
+        --path: #58a6ff;
+        --symbol: #f0883e;
+        --accent: #58a6ff;
+        --keyword: #ff7b72;
+        --string: #a5d6ff;
+        --dir: #79c0ff;
+        --exe: #56d364;
+        --warn: #d29922;
+        --err: #f85149;
+        --chip-bg: #21262d;
+        --chip-border: #363b42;
+      }
+
+      :root[data-theme="matrix"] {
+        --bg: #030a04;
+        --header-bg: #08140a;
+        --border: #143818;
+        --text: #7ee787;
+        --dim: #388bfd;
+        --user: #2ea043;
+        --path: #56d364;
+        --symbol: #7ee787;
+        --accent: #7ee787;
+        --keyword: #56d364;
+        --string: #7ee787;
+        --dir: #56d364;
+        --exe: #7ee787;
+        --warn: #d29922;
+        --err: #f85149;
+        --chip-bg: #08140a;
+        --chip-border: #143818;
+      }
+
+      :root[data-theme="light"] {
+        --bg: #ffffff;
+        --header-bg: #f6f8fa;
+        --border: #d0d7de;
+        --text: #1f2328;
+        --dim: #656d76;
+        --user: #1a7f37;
+        --path: #0969da;
+        --symbol: #bc4c00;
+        --accent: #0969da;
+        --keyword: #cf222e;
+        --string: #0a3069;
+        --dir: #0969da;
+        --exe: #1a7f37;
+        --warn: #9a6700;
+        --err: #cf222e;
+        --chip-bg: #f6f8fa;
+        --chip-border: #d0d7de;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        background: #080c10;
+        color: var(--text);
+        font-family:
+          "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+          Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        overflow: hidden;
+        padding: 16px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .terminal-window {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        max-width: 1100px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        overflow: hidden;
+      }
+
+      @media (max-width: 768px) {
+        html,
+        body {
+          padding: 0;
+        }
+        .terminal-window {
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+        }
+      }
+
+      .terminal-titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--border);
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dot.red {
+        background: #ff5f56;
+      }
+      .dot.yellow {
+        background: #ffbd2e;
+      }
+      .dot.green {
+        background: #27c93f;
+      }
+
+      .window-title {
+        font-size: 12px;
+        color: var(--dim);
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      .window-actions {
+        font-size: 11px;
+        color: var(--dim);
+      }
+
+      .terminal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 18px 20px 24px 20px;
+        word-break: break-word;
+        white-space: pre-wrap;
+        cursor: text;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .terminal-body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      .output-line {
+        margin-bottom: 3px;
+        line-height: 1.5;
+      }
+
+      .ascii-banner {
+        font-size: 10.5px;
+        line-height: 1.15;
+        letter-spacing: -0.3px;
+        margin: 2px 0 8px 0;
+        display: block;
+      }
+
+      .prompt-line {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-top: 10px;
+        margin-bottom: 12px;
+        min-height: 24px;
+      }
+
+      .prompt-prefix {
+        user-select: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .p-user {
+        color: var(--user);
+        font-weight: 700;
+      }
+      .p-sep {
+        color: var(--dim);
+      }
+      .p-path {
+        color: var(--path);
+        font-weight: 700;
+      }
+      .p-symbol {
+        color: var(--symbol);
+        font-weight: 700;
+        margin-right: 8px;
+      }
+
+      .prompt-input {
+        flex: 1;
+        min-width: 120px;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        caret-color: var(--accent);
+        padding: 0 4px;
+      }
+
+      .quick-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: var(--header-bg);
+        border-top: 1px solid var(--border);
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-shrink: 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .quick-bar::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      .quick-btn {
+        background: var(--chip-bg);
+        color: var(--text);
+        border: 1px solid var(--chip-border);
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-family: inherit;
+        font-size: 11.5px;
+        cursor: pointer;
+        transition: border-color 0.1s;
+      }
+      .quick-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* Colors inside output */
+      .bold {
+        font-weight: 700;
+      }
+      .dim {
+        color: var(--dim);
+      }
+      .c-user {
+        color: var(--user);
+      }
+      .c-path {
+        color: var(--path);
+      }
+      .c-dir {
+        color: var(--dir);
+        font-weight: 700;
+      }
+      .c-exe {
+        color: var(--exe);
+      }
+      .c-accent {
+        color: var(--accent);
+      }
+      .c-warn {
+        color: var(--warn);
+      }
+      .c-err {
+        color: var(--err);
+      }
+      .c-keyword {
+        color: var(--keyword);
+      }
+      .c-str {
+        color: var(--string);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+
+      .cmd-link {
+        color: var(--accent);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .cmd-link:hover {
+        color: var(--user);
+      }
+
+      @media (max-width: 600px) {
+        html,
+        body {
+          font-size: 13px;
+        }
+        .terminal-body {
+          padding: 10px 12px;
+        }
+        .window-title {
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <div class="window-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="window-title" id="win-title">
+          shivam@portfolio: ~ (bash)
+        </div>
+        <div class="window-actions">bash 5.2.21</div>
+      </div>
+
+      <div class="terminal-body" id="term-body">
+        <div id="output"></div>
+        <div class="prompt-line" id="prompt-row">
+          <span class="prompt-prefix" id="prompt-label">
+            <span class="p-user">shivam@portfolio</span
+            ><span class="p-sep">:</span
+            ><span class="p-path" id="prompt-path">~</span
+            ><span class="p-symbol">$</span>
+          </span>
+          <input
+            type="text"
+            id="cmd-input"
+            class="prompt-input"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            autofocus
+          />
+        </div>
+      </div>
+
+      <div class="quick-bar">
+        <span class="dim" style="font-size: 11px; margin-right: 4px"
+          >Quick:</span
+        >
+        <button class="quick-btn" data-c="help">help</button>
+        <button class="quick-btn" data-c="ls -la">ls -la</button>
+        <button class="quick-btn" data-c="about">about</button>
+        <button class="quick-btn" data-c="projects">projects</button>
+        <button class="quick-btn" data-c="skills">skills</button>
+        <button class="quick-btn" data-c="education">education</button>
+        <button class="quick-btn" data-c="achievements">achievements</button>
+        <button class="quick-btn" data-c="contact">contact</button>
+        <button class="quick-btn" data-c="tree">tree</button>
+        <button class="quick-btn" data-c="neofetch">neofetch</button>
+        <button class="quick-btn" data-c="clear">clear</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var outEl = document.getElementById("output");
+        var inputEl = document.getElementById("cmd-input");
+        var bodyEl = document.getElementById("term-body");
+        var pathEl = document.getElementById("prompt-path");
+        var titleEl = document.getElementById("win-title");
+        var rootEl = document.documentElement;
+
+        var currentDir = "~";
+        var history = [];
+        var histIndex = 0;
+
+        var VFS = {
+          "~": {
+            type: "dir",
+            items: {
+              "about.txt": {
+                type: "file",
+                size: 780,
+                date: "Oct 10 14:15",
+                lines: [
+                  '<span class="bold c-accent">SHIVAM RAY</span> - <span class="dim">Undergraduate SWE & Backend-Leaning Full-Stack Engineer</span>',
+                  "Education : B.Tech in CSE @ University Institute of Technology, RGPV, Bhopal (CGPA: 8.19 / 10.0)",
+                  "Graduation: Expected May 2027",
+                  "Location  : Bhopal, India",
+                  'Email     : <a href="mailto:shivamray4292@gmail.com">shivamray4292@gmail.com</a> | Phone: +91 6260399616',
+                  "",
+                  '<span class="bold">Professional Summary:</span>',
+                  "Motivated undergraduate seeking software engineering opportunities to apply strong problem-solving",
+                  "abilities and engineering fundamentals in building reliable, user-focused software.",
+                  "Quick learner with a hands-on approach to learning new technologies and turning ideas into working solutions.",
+                  "",
+                  "I engineer scalable backend systems where correctness matters: payments that never double-charge,",
+                  "dead-letter queues with 99.9% event delivery reliability, and real-time AI code generation streams over SSE.",
+                  "",
+                  '<span class="bold">Key Milestones:</span>',
+                  "• Hackathon Finalist — ABV-IIITM Infotsav (Lead Team SMAR among 1,100+ competing teams)",
+                  "• Solved 400+ DSA problems on LeetCode (C++, Java, SQL)",
+                  "• Built functional MVP of ReWear in 8 hours during Odoo Hackathon under tight deadlines",
+                ],
+              },
+              "skills.txt": {
+                type: "file",
+                size: 640,
+                date: "Oct 10 14:15",
+                lines: [
+                  '<span class="bold">TECHNICAL SKILLS</span>',
+                  "--------------------------------------------------------------------------------",
+                  '<span class="bold c-accent">Languages        </span>: Java (21), C++',
+                  '<span class="bold c-accent">Backend & Sec    </span>: Spring Boot 3.4, Spring Security, Spring Data JPA, RESTful APIs,',
+                  "                   Server-Sent Events (SSE), Webhooks, JWT, Layered Architecture",
+                  '<span class="bold c-accent">Databases & Cache</span>: PostgreSQL, Redis, MySQL, MinIO',
+                  '<span class="bold c-accent">AI & LLM         </span>: Spring AI, OpenAI GPT APIs, Google Gemini AI, Code Synthesis, Prompt Engineering',
+                  '<span class="bold c-accent">Frontend         </span>: React 19, TypeScript, Sandpack, CodeMirror, Next.js, Tailwind CSS',
+                  '<span class="bold c-accent">Tools & DevOps   </span>: Docker, Docker Compose, Git, Maven, Postman',
+                  '<span class="bold c-accent">Core Concepts    </span>: OOP, Design Patterns (Strategy, State Machine), System Design,',
+                  "                   Dead Letter Queues, Async Processing",
+                ],
+              },
+              "education.txt": {
+                type: "file",
+                size: 320,
+                date: "Oct 10 14:15",
+                lines: [
+                  '<span class="bold">EDUCATION</span>',
+                  "--------------------------------------------------------------------------------",
+                  "Degree     : Bachelor of Technology (B.Tech) in Computer Science & Engineering",
+                  "Institute  : University Institute of Technology, RGPV, Bhopal",
+                  "Graduation : Expected May 2027",
+                  'CGPA       : <span class="c-user bold">8.19 / 10.0</span>',
+                ],
+              },
+              "achievements.txt": {
+                type: "file",
+                size: 490,
+                date: "Oct 10 14:15",
+                lines: [
+                  '<span class="bold">ACHIEVEMENTS & AWARDS</span>',
+                  "--------------------------------------------------------------------------------",
+                  '• <span class="c-accent bold">Hackathon Finalist:</span> Reached finals of Hackathon (ABV-IIITM Infotsav), leading Team SMAR among 1,100+ competing teams.',
+                  '• <span class="c-user bold">LeetCode Problem Solver:</span> Solved 400+ DSA problems on LeetCode in C++ and Java, including SQL query challenges.',
+                  '• <span class="bold">Rapid Prototyping:</span> Developed functional MVP of ReWear within 8 hours during Odoo Hackathon.',
+                ],
+              },
+              "contact.txt": {
+                type: "file",
+                size: 360,
+                date: "Oct 10 14:15",
+                lines: [
+                  '<span class="bold">CONTACT INFORMATION</span>',
+                  "--------------------------------------------------------------------------------",
+                  'Email    : <a href="mailto:shivamray4292@gmail.com">shivamray4292@gmail.com</a>',
+                  "Phone    : +91 6260399616",
+                  "Location : Bhopal, India",
+                  'GitHub   : <a href="https://github.com/rayshivam30" target="_blank" rel="noopener">https://github.com/rayshivam30</a>',
+                  'LinkedIn : <a href="https://linkedin.com/in/rayshivam30" target="_blank" rel="noopener">https://linkedin.com/in/rayshivam30</a>',
+                  'LeetCode : <a href="https://leetcode.com/u/rayshivam30" target="_blank" rel="noopener">https://leetcode.com/u/rayshivam30</a>',
+                ],
+              },
+              "resume.txt": {
+                type: "file",
+                size: 1850,
+                date: "Oct 10 14:15",
+                lines: [
+                  "================================================================================",
+                  "SHIVAM RAY | +91 6260399616 | shivamray4292@gmail.com | Bhopal, India",
+                  "GitHub: github.com/rayshivam30 | LinkedIn: in/rayshivam30 | LeetCode: u/rayshivam30",
+                  "================================================================================",
+                  "",
+                  "EDUCATION:",
+                  "  B.Tech in Computer Science & Engineering (CGPA: 8.19 / 10.0)",
+                  "  University Institute of Technology, RGPV, Bhopal | Expected May 2027",
+                  "",
+                  "TECHNICAL SKILLS:",
+                  "  Languages: Java (21), C++",
+                  "  Backend: Spring Boot 3.4, Spring Security, Spring Data JPA, Spring AI, REST APIs, SSE, Webhooks",
+                  "  Databases: PostgreSQL, Redis, MySQL, MinIO",
+                  "  DevOps: Docker, Docker Compose, Git, Maven, Postman",
+                  "  Frontend: React 19, TypeScript, Sandpack, CodeMirror",
+                  "",
+                  "FEATURED PROJECTS:",
+                  "1. Full-Stack Payment Infrastructure & Merchant Management Platform (RazorPay Clone)",
+                  "   Stack: Java 21, Spring Boot 3.4, React 19, TypeScript, PostgreSQL, Redis, Docker",
+                  "   Demo: https://razor-pay-clone-coral.vercel.app/ | Repo: github.com/rayshivam30/RazorPay-Clone",
+                  "   - Strategy pattern multi-gateway routing with auto fallback",
+                  "   - Payment State Machine (0% invalid transitions) with PostgreSQL audit trails",
+                  "   - AES-256 Card Vault & async webhook engine with Dead Letter Queue retries (99.9% reliability)",
+                  "",
+                  "2. AI-Powered Full-Stack App Builder (Lovable Clone)",
+                  "   Stack: Java 21, Spring Boot, Spring AI, OpenAI GPT, React, TypeScript, PostgreSQL, Stripe, MinIO, Docker",
+                  "   Demo: https://ai-powered-full-stack-app-builder-o.vercel.app/ | Repo: github.com/rayshivam30/AI-Powered-Full-Stack-App-Builder",
+                  "   - Real-time React codebase generation & in-browser execution from natural language",
+                  "   - Interactive live-preview (Sandpack + CodeMirror) with automated runtime error repair via LLM",
+                  "   - Server-Sent Events (SSE) token stream parser, Spring Security, JWT, Stripe billing",
+                  "",
+                  "3. DevNexus - AI-Powered Incident Management Platform",
+                  "   Stack: Java, Spring Boot 3, PostgreSQL, Spring Security, JWT, Google Gemini AI, Docker",
+                  "   Demo: https://devnexus-omega.vercel.app/ | Repo: github.com/rayshivam30/DevNexus",
+                  "   - Automated root-cause analysis on crash reports using Google Gemini AI",
+                  "   - GitHub Webhook HMAC-SHA256 verification for CI/CD failures & SLA deadline tracking",
+                ],
+              },
+              ".bashrc": {
+                type: "file",
+                size: 240,
+                date: "Oct 10 14:15",
+                lines: [
+                  "# ~/.bashrc",
+                  'export USER="shivam"',
+                  'export SHELL="/bin/bash"',
+                  'export HOME="/home/shivam"',
+                  'alias ll="ls -la"',
+                  'alias la="ls -a"',
+                  'alias p="projects"',
+                  'alias c="clear"',
+                  'PS1="\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ "',
+                ],
+              },
+              projects: {
+                type: "dir",
+                size: 4096,
+                date: "Oct 10 14:15",
+                items: {
+                  "razorpay.md": {
+                    type: "file",
+                    size: 890,
+                    date: "Oct 10 14:15",
+                    lines: [
+                      '<span class="bold c-accent">Razorpay Clone — Payment Infrastructure Platform</span>',
+                      "================================================================================",
+                      '<span class="bold">Stack:</span> Java 21, Spring Boot 3.4, React 19, TypeScript, PostgreSQL, Redis, Docker',
+                      '<span class="bold">Links:</span> Live Demo: <a href="https://razor-pay-clone-coral.vercel.app/" target="_blank" rel="noopener">https://razor-pay-clone-coral.vercel.app/</a>',
+                      '       GitHub:    <a href="https://github.com/rayshivam30/RazorPay-Clone" target="_blank" rel="noopener">https://github.com/rayshivam30/RazorPay-Clone</a>',
+                      "",
+                      '<span class="bold">Overview:</span>',
+                      "Built an end-to-end payment gateway platform processing Card, UPI, and NetBanking transactions,",
+                      "pairing a responsive React 19/TypeScript merchant dashboard with Spring Boot 3.4 REST APIs.",
+                      "",
+                      '<span class="bold">Key Architecture:</span>',
+                      "• Strategy design pattern routing transactions across multiple gateways with automatic fallback.",
+                      "• Payment State Machine governing transaction lifecycles (Created -> Processing -> Success/Failed/Refunded),",
+                      "  reducing invalid state transitions to 0% while preserving full audit trails in PostgreSQL.",
+                      "• PCI-inspired Card Vault using AES-256 encryption to tokenize cardholder data.",
+                      "• Asynchronous webhook/settlement engine with Dead Letter Queue (DLQ) retries achieving 99.9% reliability.",
+                    ],
+                  },
+                  "lovable.md": {
+                    type: "file",
+                    size: 920,
+                    date: "Oct 10 14:15",
+                    lines: [
+                      '<span class="bold c-accent">Lovable Clone — AI-Powered Full-Stack App Builder</span>',
+                      "================================================================================",
+                      '<span class="bold">Stack:</span> Java 21, Spring Boot, Spring AI, OpenAI GPT, React, TypeScript, PostgreSQL, Stripe, MinIO, Docker',
+                      '<span class="bold">Links:</span> Live Demo: <a href="https://ai-powered-full-stack-app-builder-o.vercel.app/" target="_blank" rel="noopener">https://ai-powered-full-stack-app-builder-o.vercel.app/</a>',
+                      '       GitHub:    <a href="https://github.com/rayshivam30/AI-Powered-Full-Stack-App-Builder" target="_blank" rel="noopener">https://github.com/rayshivam30/AI-Powered-Full-Stack-App-Builder</a>',
+                      "",
+                      '<span class="bold">Overview:</span>',
+                      "Full-stack AI SaaS platform enabling real-time generation and in-browser execution of React codebases",
+                      "from natural language prompts.",
+                      "",
+                      '<span class="bold">Key Architecture:</span>',
+                      "• Integrated Spring AI with OpenAI GPT APIs to construct structured multi-file generation prompts",
+                      "  and custom parsers for full-stack React and CSS code synthesis.",
+                      "• Interactive live-preview engine combining Sandpack and CodeMirror for real-time rendering,",
+                      "  multi-tab file editing, and auto-capturing runtime errors fed back to the LLM for automated repair.",
+                      "• Secured backend with Spring Security, JWT, workspace permission guards, and engineered a",
+                      "  Server-Sent Events (SSE) stream parser for real-time token delivery.",
+                    ],
+                  },
+                  "devnexus.md": {
+                    type: "file",
+                    size: 870,
+                    date: "Oct 10 14:15",
+                    lines: [
+                      '<span class="bold c-accent">DevNexus — AI-Powered Incident Management Platform</span>',
+                      "================================================================================",
+                      '<span class="bold">Stack:</span> Java, Spring Boot 3, PostgreSQL, Spring Security, JWT, Google Gemini AI, Docker',
+                      '<span class="bold">Links:</span> Live Demo: <a href="https://devnexus-omega.vercel.app/" target="_blank" rel="noopener">https://devnexus-omega.vercel.app/</a>',
+                      '       GitHub:    <a href="https://github.com/rayshivam30/DevNexus" target="_blank" rel="noopener">https://github.com/rayshivam30/DevNexus</a>',
+                      "",
+                      '<span class="bold">Overview:</span>',
+                      "Team project incident lifecycle management platform with automated AI root-cause analysis on crash reports.",
+                      "",
+                      '<span class="bold">Key Architecture:</span>',
+                      "• Developed Spring Boot backend with RESTful APIs, layered architecture, and PostgreSQL for incident management.",
+                      "• Integrated Google Gemini AI to perform automated root-cause analysis on application crash reports,",
+                      "  generating severity classification, risk assessment, and code-fix recommendations.",
+                      "• Built secure JWT-based authentication and role-based access control (RBAC) with Spring Security.",
+                      "• Implemented GitHub Webhook integration with HMAC-SHA256 signature verification to automatically create",
+                      "  incidents from CI/CD failures, along with an SLA engine for response & resolution deadline tracking.",
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        var PROJECTS = [
+          {
+            alias: "razorpay",
+            title: "Razorpay Clone — Payment Infrastructure Platform",
+            desc: "End-to-end payment gateway (Card, UPI, NetBanking) with Strategy pattern routing, state machine lifecycle, AES-256 card vault, and DLQ retries.",
+            stack:
+              "Java 21, Spring Boot 3.4, React 19, TypeScript, PostgreSQL, Redis, Docker",
+            demo: "https://razor-pay-clone-coral.vercel.app/",
+            repo: "https://github.com/rayshivam30/RazorPay-Clone",
+          },
+          {
+            alias: "lovable",
+            title: "Lovable Clone — AI Full-Stack App Builder",
+            desc: "AI SaaS generating & executing React codebases in-browser from prompts with Spring AI, Sandpack live-preview, error auto-repair, and SSE streaming.",
+            stack:
+              "Java 21, Spring Boot, Spring AI, OpenAI GPT, React, TypeScript, PostgreSQL, Stripe, MinIO, Docker",
+            demo: "https://ai-powered-full-stack-app-builder-o.vercel.app/",
+            repo: "https://github.com/rayshivam30/AI-Powered-Full-Stack-App-Builder",
+          },
+          {
+            alias: "devnexus",
+            title: "DevNexus — AI Incident Management Platform",
+            desc: "Incident lifecycle management with automated Gemini AI crash report root-cause analysis, GitHub CI/CD webhooks, and SLA tracking.",
+            stack:
+              "Java, Spring Boot 3, PostgreSQL, Spring Security, JWT, Google Gemini AI, Docker",
+            demo: "https://devnexus-omega.vercel.app/",
+            repo: "https://github.com/rayshivam30/DevNexus",
+          },
+        ];
+
+        var OTHER_PROJECTS = [
+          {
+            name: "rewear",
+            url: "https://github.com/rayshivam30",
+            desc: "Odoo Hackathon functional clothing exchange platform built in 8 hours",
+          },
+          {
+            name: "edubridge",
+            url: "https://edu-bridge-lac.vercel.app/",
+            desc: "Educational resource and bridge platform",
+          },
+          {
+            name: "signaldesk",
+            url: "https://github.com/rayshivam30/signaldesk",
+            desc: "Developer signaling & event desk",
+          },
+          {
+            name: "gearguard",
+            url: "https://github.com/rayshivam30/GearGuard",
+            desc: "Equipment monitoring utility",
+          },
+          {
+            name: "pycrawler",
+            url: "https://github.com/rayshivam30/PyCrawler",
+            desc: "Python web scraper & crawler",
+          },
+        ];
+
+        function printLine(html) {
+          var div = document.createElement("div");
+          div.className = "output-line";
+          div.innerHTML = html !== undefined ? html : "&nbsp;";
+          outEl.appendChild(div);
+        }
+
+        function printLines(lines) {
+          if (!Array.isArray(lines)) lines = [lines];
+          for (var i = 0; i < lines.length; i++) {
+            printLine(lines[i]);
+          }
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+        }
+
+        function printPromptEcho(cmd) {
+          var pathStr = currentDir;
+          printLine(
+            '<span class="p-user">shivam@portfolio</span><span class="p-sep">:</span><span class="p-path">' +
+              pathStr +
+              '</span><span class="p-symbol">$</span> ' +
+              escapeHtml(cmd),
+          );
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function getDirObj(path) {
+          if (!path || path === "~" || path === "/home/shivam") return VFS["~"];
+          if (path === "~/projects" || path === "projects")
+            return VFS["~"].items["projects"];
+          return null;
+        }
+
+        var COMMANDS = {
+          help: function () {
+            return [
+              '<span class="bold">GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)</span>',
+              "Available bash commands and portfolio shortcuts:",
+              "",
+              '<span class="bold c-accent">PORTFOLIO SHORTCUTS</span>',
+              '  <span class="c-user">about</span>        - who I am & professional summary',
+              '  <span class="c-user">projects</span>     - view featured projects (Razorpay Clone, Lovable Clone, DevNexus)',
+              '  <span class="c-user">open &lt;proj&gt;</span>  - open project demo or repo (e.g. <span class="cmd-link" data-c="open razorpay">open razorpay</span>)',
+              '  <span class="c-user">skills</span>       - technical tools, backend frameworks & languages',
+              '  <span class="c-user">education</span>    - degree, university and CGPA',
+              '  <span class="c-user">achievements</span> - hackathon milestones & LeetCode stats',
+              '  <span class="c-user">contact</span>      - email, phone, GitHub, LinkedIn, LeetCode links',
+              '  <span class="c-user">resume</span>       - full text resume view',
+              "",
+              '<span class="bold c-accent">BASH & SYSTEM UTILITIES</span>',
+              '  <span class="c-user">ls [-la]</span>     - list directory contents',
+              '  <span class="c-user">cd &lt;dir&gt;</span>     - change directory (e.g. <span class="cmd-link" data-c="cd projects">cd projects</span>, <span class="cmd-link" data-c="cd ..">cd ..</span>)',
+              '  <span class="c-user">pwd</span>          - print current working directory',
+              '  <span class="c-user">cat &lt;file&gt;</span>   - view file contents (e.g. <span class="cmd-link" data-c="cat skills.txt">cat skills.txt</span>)',
+              '  <span class="c-user">tree</span>         - display directory tree',
+              '  <span class="c-user">whoami</span>       - print current user',
+              '  <span class="c-user">id</span>           - print user and group ids',
+              '  <span class="c-user">neofetch</span>     - system & profile information card',
+              '  <span class="c-user">uname [-a]</span>   - print operating system information',
+              '  <span class="c-user">date</span>         - print current system date & time',
+              '  <span class="c-user">uptime</span>       - show system uptime and load average',
+              '  <span class="c-user">top / ps</span>     - display running processes',
+              '  <span class="c-user">grep &lt;t&gt; &lt;f&gt;</span> - search pattern in a file',
+              '  <span class="c-user">echo &lt;text&gt;</span>  - display a line of text',
+              '  <span class="c-user">history</span>      - display command history',
+              '  <span class="c-user">clear</span>        - clear terminal screen (Ctrl+L)',
+              '  <span class="c-user">theme</span>        - toggle theme: dark, matrix, light',
+              '  <span class="c-user">sudo hire-me</span> - elevate privileges and connect',
+              '  <span class="c-user">exit</span>         - terminate session',
+            ];
+          },
+
+          about: function () {
+            return VFS["~"].items["about.txt"].lines.concat([
+              "",
+              '<span class="dim">Tip: run <span class="cmd-link" data-c="projects">projects</span> or <span class="cmd-link" data-c="skills">skills</span> to see more.</span>',
+            ]);
+          },
+
+          skills: function () {
+            return VFS["~"].items["skills.txt"].lines;
+          },
+
+          education: function () {
+            return VFS["~"].items["education.txt"].lines;
+          },
+
+          achievements: function () {
+            return VFS["~"].items["achievements.txt"].lines;
+          },
+
+          contact: function () {
+            return VFS["~"].items["contact.txt"].lines;
+          },
+
+          resume: function () {
+            return VFS["~"].items["resume.txt"].lines;
+          },
+
+          projects: function () {
+            var lines = [
+              '<span class="bold c-accent">FEATURED PROJECTS</span>',
+              "",
+            ];
+            PROJECTS.forEach(function (p, i) {
+              lines.push(
+                '<span class="bold c-user">[' +
+                  (i + 1) +
+                  "] " +
+                  p.title +
+                  "</span>",
+              );
+              lines.push("    " + p.desc);
+              lines.push('    <span class="dim">Stack:</span> ' + p.stack);
+              lines.push(
+                '    <span class="dim">Links:</span> Live Demo: <a href="' +
+                  p.demo +
+                  '" target="_blank" rel="noopener">' +
+                  p.demo +
+                  '</a> | GitHub: <a href="' +
+                  p.repo +
+                  '" target="_blank" rel="noopener">' +
+                  p.repo +
+                  "</a>",
+              );
+              lines.push(
+                '    <span class="dim">Run:</span>   <span class="cmd-link" data-c="open ' +
+                  p.alias +
+                  '">open ' +
+                  p.alias +
+                  '</span> (demo)  |  <span class="cmd-link" data-c="open ' +
+                  p.alias +
+                  ' repo">open ' +
+                  p.alias +
+                  " repo</span>",
+              );
+              lines.push("");
+            });
+
+            lines.push(
+              '<span class="bold c-accent">ADDITIONAL REPOSITORIES & HACKATHONS</span>',
+            );
+            OTHER_PROJECTS.forEach(function (o) {
+              lines.push(
+                '  • <span class="bold">' +
+                  o.name +
+                  "</span>: " +
+                  o.desc +
+                  ' &rarr; <a href="' +
+                  o.url +
+                  '" target="_blank" rel="noopener">' +
+                  o.url +
+                  "</a>",
+              );
+            });
+            return lines;
+          },
+
+          open: function (args) {
+            if (!args) {
+              return [
+                "usage: open &lt;project-name | demo | repo&gt;",
+                'examples: <span class="cmd-link" data-c="open razorpay">open razorpay</span>, <span class="cmd-link" data-c="open lovable">open lovable</span>, <span class="cmd-link" data-c="open devnexus">open devnexus</span>, <span class="cmd-link" data-c="open github">open github</span>',
+              ];
+            }
+            var target = args.trim().toLowerCase();
+            var first = target.split(/\s+/)[0];
+            var isRepo = /\b(repo|git|github)\b/i.test(target);
+
+            if (first === "github" || first === "gh") {
+              window.open(
+                "https://github.com/rayshivam30",
+                "_blank",
+                "noopener",
+              );
+              return ["Opening GitHub: https://github.com/rayshivam30"];
+            }
+            if (first === "linkedin") {
+              window.open(
+                "https://linkedin.com/in/rayshivam30",
+                "_blank",
+                "noopener",
+              );
+              return ["Opening LinkedIn: https://linkedin.com/in/rayshivam30"];
+            }
+            if (first === "leetcode") {
+              window.open(
+                "https://leetcode.com/u/rayshivam30",
+                "_blank",
+                "noopener",
+              );
+              return ["Opening LeetCode: https://leetcode.com/u/rayshivam30"];
+            }
+            if (first === "email" || first === "mail") {
+              window.location.href = "mailto:shivamray4292@gmail.com";
+              return ["Opening email client: shivamray4292@gmail.com"];
+            }
+
+            var proj = PROJECTS.filter(function (p) {
+              return p.alias === first;
+            })[0];
+            if (proj) {
+              var url = isRepo ? proj.repo : proj.demo;
+              window.open(url, "_blank", "noopener");
+              return [
+                "Launching " +
+                  proj.title +
+                  (isRepo ? " (repo)" : " (demo)") +
+                  "...",
+                '<span class="dim">&rarr; ' + url + "</span>",
+              ];
+            }
+
+            var other = OTHER_PROJECTS.filter(function (o) {
+              return o.name === first;
+            })[0];
+            if (other) {
+              window.open(other.url, "_blank", "noopener");
+              return [
+                "Launching " + other.name + "...",
+                '<span class="dim">&rarr; ' + other.url + "</span>",
+              ];
+            }
+
+            return [
+              '<span class="c-err">open: cannot find project "' +
+                escapeHtml(first) +
+                '".</span> Type <span class="cmd-link" data-c="projects">projects</span> to see all projects.',
+            ];
+          },
+
+          ls: function (args) {
+            var showAll = false;
+            var longFormat = false;
+            var targetPath = currentDir;
+
+            if (args) {
+              var parts = args.trim().split(/\s+/);
+              parts.forEach(function (pt) {
+                if (pt.startsWith("-")) {
+                  if (pt.indexOf("a") !== -1) showAll = true;
+                  if (pt.indexOf("l") !== -1) longFormat = true;
+                } else {
+                  targetPath = pt;
+                }
+              });
+            }
+
+            var dir =
+              targetPath === "projects" || targetPath === "~/projects"
+                ? VFS["~"].items["projects"]
+                : VFS["~"];
+            if (!dir || dir.type !== "dir") {
+              return [
+                '<span class="c-err">ls: cannot access \'' +
+                  escapeHtml(targetPath) +
+                  "': No such file or directory</span>",
+              ];
+            }
+
+            var items = Object.keys(dir.items);
+            if (!showAll) {
+              items = items.filter(function (k) {
+                return !k.startsWith(".");
+              });
+            }
+
+            if (longFormat) {
+              var lines = ["total " + items.length * 4];
+              if (showAll) {
+                lines.push(
+                  'drwxr-xr-x 3 shivam shivam  4096 Oct 10 14:15 <span class="c-dir">.</span>',
+                );
+                lines.push(
+                  'drwxr-xr-x 3 root   root    4096 Oct 10 14:15 <span class="c-dir">..</span>',
+                );
+              }
+              items.forEach(function (item) {
+                var entry = dir.items[item];
+                var isDir = entry.type === "dir";
+                var perm = isDir ? "drwxr-xr-x 2" : "-rw-r--r-- 1";
+                var sz = (entry.size || 512).toString().padStart(5, " ");
+                var nameHtml = isDir
+                  ? '<span class="c-dir">' + item + "</span>"
+                  : '<span class="cmd-link" data-c="cat ' +
+                    item +
+                    '">' +
+                    item +
+                    "</span>";
+                lines.push(
+                  perm +
+                    " shivam shivam " +
+                    sz +
+                    " " +
+                    (entry.date || "Oct 10 14:15") +
+                    " " +
+                    nameHtml,
+                );
+              });
+              return lines;
+            }
+
+            var rendered = items.map(function (item) {
+              var isDir = dir.items[item].type === "dir";
+              return isDir
+                ? '<span class="c-dir">' + item + "/</span>"
+                : '<span class="cmd-link" data-c="cat ' +
+                    item +
+                    '">' +
+                    item +
+                    "</span>";
+            });
+            return [rendered.join("   ")];
+          },
+
+          ll: function (args) {
+            return COMMANDS.ls("-la " + (args || ""));
+          },
+
+          la: function (args) {
+            return COMMANDS.ls("-a " + (args || ""));
+          },
+
+          pwd: function () {
+            return [
+              currentDir === "~" ? "/home/shivam" : "/home/shivam/projects",
+            ];
+          },
+
+          cd: function (args) {
+            var d = (args || "").trim();
+            if (!d || d === "~" || d === "/home/shivam") {
+              currentDir = "~";
+              pathEl.textContent = "~";
+              titleEl.textContent = "shivam@portfolio: ~ (bash)";
+              return [];
+            }
+            if (
+              d === "projects" ||
+              d === "./projects" ||
+              d === "~/projects" ||
+              d === "/home/shivam/projects"
+            ) {
+              currentDir = "~/projects";
+              pathEl.textContent = "~/projects";
+              titleEl.textContent = "shivam@portfolio: ~/projects (bash)";
+              return [];
+            }
+            if (d === ".." || d === "../") {
+              currentDir = "~";
+              pathEl.textContent = "~";
+              titleEl.textContent = "shivam@portfolio: ~ (bash)";
+              return [];
+            }
+            return [
+              '<span class="c-err">bash: cd: ' +
+                escapeHtml(d) +
+                ": No such file or directory</span>",
+            ];
+          },
+
+          cat: function (args) {
+            if (!args || !args.trim()) {
+              return ["usage: cat &lt;filename&gt;"];
+            }
+            var filename = args.trim();
+            var activeDir =
+              currentDir === "~" ? VFS["~"] : VFS["~"].items["projects"];
+
+            // Check direct in active directory
+            if (activeDir.items && activeDir.items[filename]) {
+              var fileObj = activeDir.items[filename];
+              if (fileObj.type === "dir")
+                return [
+                  '<span class="c-err">cat: ' +
+                    escapeHtml(filename) +
+                    ": Is a directory</span>",
+                ];
+              return fileObj.lines;
+            }
+
+            // Check path like projects/razorpay.md
+            if (filename.indexOf("/") !== -1) {
+              var parts = filename.split("/");
+              if (
+                parts[0] === "projects" &&
+                VFS["~"].items["projects"].items[parts[1]]
+              ) {
+                return VFS["~"].items["projects"].items[parts[1]].lines;
+              }
+            }
+
+            return [
+              '<span class="c-err">cat: ' +
+                escapeHtml(filename) +
+                ": No such file or directory</span>",
+            ];
+          },
+
+          tree: function () {
+            return [
+              '<span class="c-dir">.</span>',
+              '├── <span class="cmd-link" data-c="cat .bashrc">.bashrc</span>',
+              '├── <span class="cmd-link" data-c="cat about.txt">about.txt</span>',
+              '├── <span class="cmd-link" data-c="cat achievements.txt">achievements.txt</span>',
+              '├── <span class="cmd-link" data-c="cat contact.txt">contact.txt</span>',
+              '├── <span class="cmd-link" data-c="cat education.txt">education.txt</span>',
+              '├── <span class="c-dir">projects</span>',
+              '│   ├── <span class="cmd-link" data-c="cat projects/devnexus.md">devnexus.md</span>',
+              '│   ├── <span class="cmd-link" data-c="cat projects/lovable.md">lovable.md</span>',
+              '│   └── <span class="cmd-link" data-c="cat projects/razorpay.md">razorpay.md</span>',
+              '├── <span class="cmd-link" data-c="cat resume.txt">resume.txt</span>',
+              '└── <span class="cmd-link" data-c="cat skills.txt">skills.txt</span>',
+              "",
+              "1 directory, 9 files",
+            ];
+          },
+
+          whoami: function () {
+            return ["shivam"];
+          },
+
+          id: function () {
+            return [
+              "uid=1000(shivam) gid=1000(shivam) groups=1000(shivam),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev)",
+            ];
+          },
+
+          uname: function (args) {
+            if (args && args.indexOf("-a") !== -1) {
+              return [
+                "Linux portfolio 6.8.0-45-generic #45-Ubuntu SMP PREEMPT_DYNAMIC x86_64 x86_64 x86_64 GNU/Linux",
+              ];
+            }
+            return ["Linux"];
+          },
+
+          date: function () {
+            return [new Date().toString()];
+          },
+
+          uptime: function () {
+            var d = new Date();
+            var timeStr =
+              ("0" + d.getHours()).slice(-2) +
+              ":" +
+              ("0" + d.getMinutes()).slice(-2) +
+              ":" +
+              ("0" + d.getSeconds()).slice(-2);
+            return [
+              " " +
+                timeStr +
+                " up 42 days, 13:37,  1 user,  load average: 0.08, 0.04, 0.01",
+            ];
+          },
+
+          echo: function (args) {
+            var text = args || "";
+            text = text
+              .replace(/\$USER/g, "shivam")
+              .replace(/\$SHELL/g, "/bin/bash")
+              .replace(/\$HOME/g, "/home/shivam")
+              .replace(
+                /\$PWD/g,
+                currentDir === "~" ? "/home/shivam" : "/home/shivam/projects",
+              );
+            return [escapeHtml(text)];
+          },
+
+          top: function () {
+            return [
+              "top - 14:26:00 up 42 days, 13:37,  1 user,  load average: 0.08, 0.04, 0.01",
+              "Tasks: 5 total,   1 running,   4 sleeping,   0 stopped,   0 zombie",
+              "%Cpu(s):  2.3 us,  0.7 sy,  0.0 ni, 96.8 id,  0.2 wa,  0.0 hi,  0.0 si",
+              "MiB Mem :  16384.0 total,   8192.4 free,   4210.8 used,   3980.8 buff/cache",
+              "",
+              '<span class="bold">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND</span>',
+              "  101 shivam    20   0 1420.4m 420.2m  45.2m S   1.8   2.6   2:15.10 java (razorpay)",
+              "  102 shivam    20   0 1510.8m 512.4m  48.1m S   2.2   3.1   3:40.22 java (lovable-ai)",
+              "  103 shivam    20   0  380.2m 120.5m  32.0m S   0.8   0.7   1:10.05 postgres: 16",
+              "  104 shivam    20   0   98.4m  35.2m  12.4m S   0.3   0.2   0:30.12 redis-server",
+              "  105 shivam    20   0   24.1m   8.2m   4.1m R   0.0   0.1   0:00.08 bash",
+            ];
+          },
+
+          ps: function () {
+            return COMMANDS.top();
+          },
+
+          grep: function (args) {
+            if (!args) return ["usage: grep &lt;pattern&gt; &lt;file&gt;"];
+            var parts = args.trim().split(/\s+/);
+            if (parts.length < 2)
+              return ["usage: grep &lt;pattern&gt; &lt;file&gt;"];
+            var query = parts[0].toLowerCase();
+            var filename = parts[1];
+            var dir =
+              currentDir === "~" ? VFS["~"] : VFS["~"].items["projects"];
+            var file = dir.items[filename];
+            if (!file)
+              return [
+                '<span class="c-err">grep: ' +
+                  escapeHtml(filename) +
+                  ": No such file or directory</span>",
+              ];
+
+            var matches = [];
+            file.lines.forEach(function (ln) {
+              var plain = ln.replace(/<[^>]+>/g, "");
+              if (plain.toLowerCase().indexOf(query) !== -1) {
+                matches.push(ln);
+              }
+            });
+            return matches.length ? matches : ["(no match found)"];
+          },
+
+          which: function (args) {
+            if (!args) return ["usage: which &lt;command&gt;"];
+            var cmd = args.trim();
+            var builtins = [
+              "bash",
+              "sh",
+              "ls",
+              "cat",
+              "cd",
+              "pwd",
+              "echo",
+              "date",
+              "grep",
+              "tree",
+              "uname",
+              "clear",
+              "sudo",
+              "top",
+              "whoami",
+            ];
+            if (builtins.indexOf(cmd) !== -1) {
+              return ["/usr/bin/" + cmd];
+            }
+            if (cmd === "java") return ["/usr/bin/java (OpenJDK 21.0.3)"];
+            if (cmd === "node") return ["/usr/bin/node (v20.12.2)"];
+            if (cmd === "docker") return ["/usr/bin/docker"];
+            return [
+              '<span class="c-err">' +
+                escapeHtml(cmd) +
+                " not found in $PATH</span>",
+            ];
+          },
+
+          neofetch: function () {
+            return [
+              '<span class="c-user">        .---.        </span>  <span class="bold c-accent">shivam@portfolio</span>',
+              '<span class="c-user">       /     \\       </span>  ----------------',
+              '<span class="c-user">      | () () |      </span>  <span class="bold">OS:</span> Ubuntu 24.04 LTS (x86_64)',
+              '<span class="c-user">       \\  -  /       </span>  <span class="bold">Host:</span> Portfolio Web Engine',
+              '<span class="c-user">        /   \\        </span>  <span class="bold">Kernel:</span> 6.8.0-generic',
+              '<span class="c-user">       /|   |\\       </span>  <span class="bold">Uptime:</span> 42 days, 13 hours',
+              '<span class="c-user">      (_|   |_)      </span>  <span class="bold">Shell:</span> bash 5.2.21',
+              '<span class="c-user">        "---"        </span>  <span class="bold">Role:</span> Backend & Full-Stack Engineer',
+              '                      <span class="bold">Stack:</span> Java 21, Spring Boot 3.4, React 19',
+              '                      <span class="bold">Education:</span> B.Tech CSE @ UIT-RGPV (CGPA 8.19)',
+              '                      <span class="bold">LeetCode:</span> 400+ Problems Solved',
+              '                      <span class="bold">Hackathon:</span> Finalist @ Infotsav (Top 1,100+)',
+            ];
+          },
+
+          history: function () {
+            return history.map(function (cmd, i) {
+              return (
+                "  " +
+                (i + 1).toString().padStart(3, " ") +
+                "  " +
+                escapeHtml(cmd)
+              );
+            });
+          },
+
+          theme: function (args) {
+            var t = (args || "").trim().toLowerCase();
+            var current = rootEl.getAttribute("data-theme") || "dark";
+            var next =
+              t ||
+              (current === "dark"
+                ? "matrix"
+                : current === "matrix"
+                  ? "light"
+                  : "dark");
+            rootEl.setAttribute("data-theme", next);
+            return ["[ ok ] Theme switched to: " + next];
+          },
+
+          sudo: function (args) {
+            if ((args || "").trim() === "hire-me") {
+              return [
+                '<span class="dim">[sudo] password for shivam: ********</span>',
+                '<span class="c-user bold">[ OK ] Permission granted: Welcome aboard!</span>',
+                "Connecting to Shivam Ray:",
+                '  Email   : <a href="mailto:shivamray4292@gmail.com">shivamray4292@gmail.com</a>',
+                "  Phone   : +91 6260399616",
+                '  GitHub  : <a href="https://github.com/rayshivam30" target="_blank" rel="noopener">https://github.com/rayshivam30</a>',
+                '  LinkedIn: <a href="https://linkedin.com/in/rayshivam30" target="_blank" rel="noopener">https://linkedin.com/in/rayshivam30</a>',
+              ];
+            }
+            return [
+              '<span class="dim">[sudo] password for shivam: </span>',
+              '<span class="c-err">shivam is not in the sudoers file. This incident will be reported.</span>',
+              '<span class="dim">Tip: try <span class="cmd-link" data-c="sudo hire-me">sudo hire-me</span></span>',
+            ];
+          },
+
+          clear: function () {
+            outEl.innerHTML = "";
+            return [];
+          },
+
+          cls: function () {
+            return COMMANDS.clear();
+          },
+
+          exit: function () {
+            return ["logout", "[Process completed - session restarted]"];
+          },
+
+          touch: function (args) {
+            return [
+              '<span class="c-err">touch: cannot touch \'' +
+                escapeHtml(args || "file") +
+                "': Read-only file system</span>",
+            ];
+          },
+
+          mkdir: function (args) {
+            return [
+              '<span class="c-err">mkdir: cannot create directory \'' +
+                escapeHtml(args || "dir") +
+                "': Read-only file system</span>",
+            ];
+          },
+
+          rm: function (args) {
+            return [
+              '<span class="c-err">rm: cannot remove \'' +
+                escapeHtml(args || "file") +
+                "': Read-only file system</span>",
+            ];
+          },
+        };
+
+        COMMANDS.fastfetch = COMMANDS.neofetch;
+        COMMANDS.man = COMMANDS.help;
+        COMMANDS.dir = COMMANDS.ls;
+        COMMANDS.xdg_open = COMMANDS.open;
+
+        function executeCommand(rawInput) {
+          var raw = rawInput.trim();
+          if (!raw) return;
+
+          history.push(raw);
+          histIndex = history.length;
+
+          printPromptEcho(raw);
+
+          var parts = raw.split(/\s+/);
+          var cmd = parts[0].toLowerCase();
+          var args = parts.slice(1).join(" ");
+
+          if (COMMANDS[cmd]) {
+            var res = COMMANDS[cmd](args);
+            if (res && res.length) {
+              printLines(res);
+            }
+          } else {
+            printLines([
+              '<span class="c-err">bash: ' +
+                escapeHtml(cmd) +
+                ": command not found</span>",
+              '<span class="dim">Type <span class="cmd-link" data-c="help">help</span> or <span class="cmd-link" data-c="ls">ls</span> to see available commands.</span>',
+            ]);
+          }
+
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+        }
+
+        // Handle Input Keydown
+        inputEl.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            var val = inputEl.value;
+            inputEl.value = "";
+            executeCommand(val);
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (histIndex > 0) {
+              histIndex--;
+              inputEl.value = history[histIndex] || "";
+            }
+          } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (histIndex < history.length - 1) {
+              histIndex++;
+              inputEl.value = history[histIndex] || "";
+            } else {
+              histIndex = history.length;
+              inputEl.value = "";
+            }
+          } else if (e.key === "Tab") {
+            e.preventDefault();
+            handleTabCompletion();
+          } else if (e.ctrlKey && e.key === "l") {
+            e.preventDefault();
+            COMMANDS.clear();
+          } else if (e.ctrlKey && e.key === "c") {
+            e.preventDefault();
+            printPromptEcho(inputEl.value + "^C");
+            inputEl.value = "";
+            bodyEl.scrollTop = bodyEl.scrollHeight;
+          }
+        });
+
+        function handleTabCompletion() {
+          var val = inputEl.value.trimStart();
+          var allCmds = Object.keys(COMMANDS);
+          var activeFiles = Object.keys(
+            (currentDir === "~" ? VFS["~"] : VFS["~"].items["projects"]).items,
+          );
+
+          if (val.indexOf(" ") === -1) {
+            // Complete command
+            var matches = allCmds.filter(function (c) {
+              return c.startsWith(val);
+            });
+            if (matches.length === 1) {
+              inputEl.value = matches[0] + " ";
+            } else if (matches.length > 1) {
+              printPromptEcho(val);
+              printLines([matches.join("   ")]);
+            }
+          } else {
+            var parts = val.split(/\s+/);
+            var last = parts[parts.length - 1];
+            var fileMatches = activeFiles.filter(function (f) {
+              return f.startsWith(last);
+            });
+            if (fileMatches.length === 1) {
+              parts[parts.length - 1] = fileMatches[0];
+              inputEl.value = parts.join(" ");
+            } else if (fileMatches.length > 1) {
+              printPromptEcho(val);
+              printLines([fileMatches.join("   ")]);
+            }
+          }
+        }
+
+        // Click delegates
+        document.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-c]");
+          if (btn) {
+            var cmd = btn.getAttribute("data-c");
+            if (cmd) {
+              executeCommand(cmd);
+              inputEl.focus();
+              return;
+            }
+          }
+          // Clicking anywhere in the terminal focuses input unless text is selected
+          if (!window.getSelection().toString()) {
+            inputEl.focus();
+          }
+        });
+
+        // Welcome Boot Banner (Immediate, zero animation delay)
+        function initTerminal() {
+          printLines([
+            "",
+            "  ███████╗██╗  ██╗██╗██╗   ██╗ █████╗ ███╗   ███╗    ██████╗  █████╗ ██╗   ██╗",
+            "  ██╔════╝██║  ██║██║██║   ██║██╔══██╗████╗ ████║    ██╔══██╗██╔══██╗╚██╗ ██╔╝",
+            "  ███████╗███████║██║██║   ██║███████║██╔████╔██║    ██████╔╝███████║ ╚████╔╝ ",
+            "  ╚════██║██╔══██║██║╚██╗ ██╔╝██╔══██║██║╚██╔╝██║    ██╔══██╗██╔══██║  ╚██╔╝  ",
+            "  ███████║██║  ██║██║ ╚████╔╝ ██║  ██║██║ ╚═╝ ██║    ██║  ██║██║  ██║   ██║   ",
+            "  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ",
+            "",
+            '  <span class="bold c-user">Linux 6.8.0-generic x86_64</span>',
+            '  Welcome to <span class="bold c-accent">Shivam Ray</span>\'s Portfolio Terminal (bash 5.2.21)',
+            "",
+            '  * Documentation: Type <span class="cmd-link" data-c="help">help</span> for commands',
+            '  * Quick bio:     Type <span class="cmd-link" data-c="about">about</span> or <span class="cmd-link" data-c="neofetch">neofetch</span>',
+            '  * Projects:      Type <span class="cmd-link" data-c="projects">projects</span> to explore',
+            '  * Files:         Type <span class="cmd-link" data-c="ls -la">ls -la</span> to browse files',
+            "",
+            '  <span class="dim">Tip: Use Tab for autocomplete, ↑/↓ for command history.</span>',
+            "",
+          ]);
+          inputEl.focus();
+        }
+
+        initTerminal();
+      })();
+    </script>
+  </body>
+</html>
